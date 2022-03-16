@@ -11,6 +11,8 @@ def scrape_all():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
 
+    #return(hemispheres(browser))
+
     news_title, news_paragraph = mars_news(browser)
 
     # Run all scraping functions and store results in a dictionary
@@ -70,12 +72,12 @@ def featured_image(browser):
     img_soup = soup(html, 'html.parser')
 
     # Add try/except for error handling
-    try:
+    #try:
         # Find the relative image url
-        img_url_rel = img_soup.find('img', class_='fancybox-image').get('src')
+    img_url_rel = img_soup.find('img', class_='fancybox-image').get('src')
 
-    except AttributeError:
-        return None
+    #except AttributeError:
+    #    return None
 
     # Use the base url to create an absolute url
     img_url = f'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/{img_url_rel}'
@@ -127,14 +129,16 @@ def hemispheres(browser):
         img_url_rel = image_soup.find('img', class_= 'wide-image').get('src')
         img_url = f'https://marshemispheres.com/{img_url_rel}'
         
-        print(titles)
-        print(img_url)
+        #print(titles)
+        #print(img_url)
         
         hemisphere['img_url'] = img_url
         hemisphere['title'] = titles
         hemisphere_image_urls.append(hemisphere)
         browser.back()
     
+    return(hemisphere_image_urls)
+
 if __name__ == "__main__":
 
     # If running as script, print scraped data
